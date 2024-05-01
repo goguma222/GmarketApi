@@ -6,6 +6,9 @@
     // TODO
      1. 서비스호출 ~ 데이터 컨트롤러로 반환까지 (사진찍은거 환인하기)
      2. 맵퍼에서 조회하는거랑, 빈값 여부 확인, 컨트롤러에서 반환해보기.
+
+     * 마이바티스 문법
+     * - #{loginId}
      -->
 
     <select id="getLoginInfo" parameterType="java.util.HashMap"
