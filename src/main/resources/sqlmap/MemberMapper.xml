@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.janghee.gmarketapi.mem.MemberMapper">
+    <!--
+    // TODO
+     1. 서비스호출 ~ 데이터 컨트롤러로 반환까지 (사진찍은거 환인하기)
+     2. 맵퍼에서 조회하는거랑, 빈값 여부 확인, 컨트롤러에서 반환해보기.
+     -->
+
+    <select id="getLoginInfo" parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+        SELECT * FROM member
+                 WHERE loginId = #{loginId}
+        LIMIT 1
+    </select>
+</mapper>
