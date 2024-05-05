@@ -11,6 +11,6 @@ import java.util.Map;
 @Repository
 @MapperScan("com.janghee.gmarketapi")
 public interface MemberMapper {
-
-    public List<Map<String, Object>> getLoginInfo();
+    // 맴버 정보 가져오기
+    public Map<String, Object> getLoginInfo(Map<String, Object>loginInfo);
 }
