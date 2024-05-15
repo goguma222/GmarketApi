@@ -1,46 +1,61 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.janghee.gmarketapi.mem.MemberMapper">
+
     <!--
     // TODO
-     1. 서비스호출 ~ 데이터 컨트롤러로 반환까지 (사진찍은거 환인하기)
-     2. 맵퍼에서 조회하는거랑, 빈값 여부 확인, 컨트롤러에서 반환해보기.
+    1. 서비스호출 ~ 데이터 컨트롤러로 반환까지 (사진찍은거 확인하기)
+    2. 맵퍼에서 조회하는거랑, 빈값 여부 확인, 컨트롤러에서 반환해보기
 
-     #로그인 API
-     * 순서
-     0번은 프론트
-     0) 프론트단에서 처리, 로그인 버튼을 누르면 아래와 같이 처리
-     0-1) 아이디/비밀번호 빈값인지 확인 후, 비어있다면 경고 alert
-     0-2) 아이디, 비밀번호 채워져 있으면, 로그인 시도, ajax통해서
-     0-3) 로그인 API 콜했을 때, 로딩화면 처리
+    # 로그인 API
+    * 순서
+    0번은 프론트
+    0) 프론트단에서 처리, 로그인 버튼을 누르면 아래와 같이 처리
+    0-1) 아이디/비밀번호 빈값인지 확인 후, 비어있다면 경고 alert
+    0-2) 아이디, 비밀번호 채워져 있으면, 로그인 시도, ajax통해서
+    0-3) 로그인 API 콜했을 때, 로딩화면 처리
 
     1 ~ 3 백엔드
-     1) Controller에서 데이터를 받는다.
-     1-1) loginType / loginPw / loginId : 3가지 받아야함.
-     1-2) 빈값인지 확인, 저 3개가 모두 들어와 있는지 확인 => 들오오지 않았다면 오류코드로 반환
-     1-3) 3개가 전부 들어왔으면, 서비단으로 요청
+    1) Controller에서 데이터를 받는다.
+    1-1) loginType / loginPw / loginId : 3가지 받아야함.
+    1-2) 빈값은지 확인, 저 3개가 모두 들어와 있는지 확인 => 들어오지 않았다면 오류코드로 반환
+    1-3) 3개가 전부 들어왔으면, 서비스단으로 요청
 
-     2) Service에서 데이터를 받아 처리
-     2-1) loginType / loginId로 Map 만들기
-     2-2) Mapper에 요청, 이때 요청하는게 타입과 아이디로 일치하는 데이터가 있는지 확인(SELECT)
-     2-3) Mapper가 데이터를 전달해주면, 빈값인지 확인 => 비어있다면 에러코드 반환
-     2-4) 비어있지 않으면, 비밀번호 비교, 같다면 성공처리, 다르다면 에러코드 처리
+    2) Service에서 데이터를 받아 처리
+    2-1) loginType / loginId로 Map 만들기
+    2-2) Mapper에 요청, 이때 요청하는게 타입과 아이디로 일치하는 데이터가 있는지 확인(SELECT)
+    2-3) Mapper가 데이터를 전달해주면, 빈값인지 확인 => 비어있다면 에러코드 반환
+    2-4) 비어있지 않으면, 비밀번호 비교, 같다면 성공처리, 다르다면 에러코드 처리
 
-     * 2-3 / 2-4 는 컨트롤러로 반환함
+    3) 컨트롤러에서 데이터 JSON으로 뱉어냄.
 
-     3) 컨트롤러에서 데이터 JSON으로 뱉어냄.
+    4번은 프론트
+    4) 프론트에서 Ajax를 통해 데이터를 받아 처리
+    4-1) 로그인이 실패하면, 사유를 alert으로 띄워줌 : 요건 많이 해봄
+    4-2) 로그인이 성공하면, 세션유지 처리
+    4-3) 4-2에서 세션처리 후, 메인으로 이동
+    4-4) 메인으로 이동 처리.
 
-     4번은 프론트
-     4) 프론트에서 Ajax를 통해 데이터를 받아 처리
-     4-1) 로그인이 실패하면, 사유를 alert으로 띄워줌 : 요건 많이 해봄
-     4-2) 로그인이 성공하면,세션유지 처리
-     4-3) 4-2에서 세션처리 후, 메인으로 이동
-     4-4) 메인으로 이동 처리.
+    * 마이바티스 문법
+    * - #{loginId}
 
-     * 마이바티스 문법
-     * - #{loginId}
-     -->
+    {
+        "loginType": "D",
+        "loginId": "id",
+        "loginPw": "Pw"
+    }
+
+    SELECT userKey, loginPw, nickname
+    FROM member
+    WHERE loginType = 'D' AND loginId = 'id'
+    LIMIT 1;
+
+    {
+        "userKey": "1111",
+        "loginPw": "pw",
+        "nickname": "nickname"
+    }
+    -->
 
     <select id="getLoginInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
         SELECT userKey, loginPw, nickname
